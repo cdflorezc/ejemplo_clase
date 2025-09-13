@@ -8,7 +8,7 @@ Esta guía rápida explica los pasos mínimos para clonar un repositorio de Node
 
 ```bash
 # clona el repo (reemplaza la URL por la del proyecto)
-git clone https://github.com/usuario/nombre-proyecto.git
+git clone https://github.com/cdflorezc/ejemplo_clase.git
 
 # entra al directorio del proyecto
 cd nombre-proyecto
@@ -22,7 +22,7 @@ El proyecto normalmente tendrá un `package.json`. Ejecuta:
 
 ```bash
 # usando npm
-npm install
+npm install o npm i
 
 # o usando yarn
 # yarn
