@@ -1,144 +1,446 @@
-# README — Clonar e inicializar un proyecto Node.js (guía básica)
+# API REST - Ejemplo Clase
 
-Esta guía rápida explica los pasos mínimos para clonar un repositorio de Node.js y dejarlo corriendo en tu máquina de desarrollo.
+## Descripción
+API REST desarrollada con Node.js, Express y Sequelize para gestión de usuarios y consulta de datos de Pokémon.
 
+## Tecnologías Utilizadas
+- **Node.js** - Runtime de JavaScript
+- **Express.js** - Framework web para Node.js
+- **Sequelize** - ORM para PostgreSQL
+- **PostgreSQL** - Base de datos
+- **CORS** - Manejo de políticas de origen cruzado
 
-
-## 1) Clonar el repositorio
-
-```bash
-# clona el repo (reemplaza la URL por la del proyecto)
-git clone https://github.com/cdflorezc/ejemplo_clase.git
-
-# entra al directorio del proyecto
-cd nombre-proyecto
+## Estructura del Proyecto
+```
+src/
+├── config/
+│   ├── config.js          # Configuración general
+│   └── database.js        # Configuración de base de datos
+├── controllers/
+│   ├── pokemon.js         # Controlador de Pokémon
+│   ├── pokemones.js       # Controlador de lista de Pokémon
+│   └── user.controller.js # Controlador de usuarios
+├── models/
+│   ├── index.js           # Índice de modelos
+│   └── user.model.js      # Modelo de Usuario
+├── routes/
+│   ├── index.js           # Router principal
+│   ├── test/
+│   │   └── index.js       # Rutas de prueba y Pokémon
+│   └── user/
+│       └── index.js       # Rutas de usuarios
+├── services/
+│   └── user.service.js    # Servicios de usuario
+└── index.js               # Punto de entrada de la aplicación
 ```
 
----
+## Instalación y Configuración
 
-## 2) Instalar dependencias
+### Prerrequisitos
+- Node.js (versión 14 o superior)
+- PostgreSQL
+- npm o yarn
 
-El proyecto normalmente tendrá un `package.json`. Ejecuta:
-
+### Instalación
 ```bash
-# usando npm
-npm install o npm i
+# Clonar el repositorio
+git clone <url-del-repositorio>
+cd ejemplo_clase
 
-# o usando yarn
-# yarn
-```
+# Instalar dependencias
+npm install
 
-Esto instalará `node_modules` con las dependencias definidas.
-
----
-
-## 3) Variables de entorno
-
-Si el proyecto usa variables de entorno, suele incluir un archivo de ejemplo (`.env.example` o `.env.sample`). Crea tu `.env` local copiando el ejemplo y ajustando valores.
-
-```bash
+# Configurar variables de entorno
 cp .env.example .env
-# editar .env con tu editor favorito
-nano .env
+# Editar el archivo .env con tus configuraciones
 ```
 
-Notas:
+### Variables de Entorno
+Crear archivo `.env` en `src/config/` con:
+```env
+NODE_ENV=development
+PORT=3000
+DB_NAME=nombre_base_datos
+DB_USER=usuario_postgres
+DB_PASS=contraseña_postgres
+DB_HOST=localhost
+```
 
-* Nunca subas tu `.env` a repositorios públicos.
-* Variables típicas: `PORT`, `DATABASE_URL`, `NODE_ENV`, `API_KEY`, etc.
-
----
-
-## 4) Scripts útiles (package.json)
-
-Abre `package.json` y revisa la sección `scripts`. Los comandos comunes son:
-
+### Ejecución
 ```bash
-# levantar en modo desarrollo (hot-reload si aplica)
+# Desarrollo
 npm run dev
 
-# correr en modo producción
-npm start
-
-# correr tests
-npm test
-
-# linters / formateo
-npm run lint
-npm run format
-```
-
-Si `npm run dev` no existe, mira `README` del proyecto específico o usa `node src/index.js` (o `node dist/index.js` si hay un build).
-
----
-
-## 5) Build (si aplica)
-
-Proyectos con TypeScript o bundlers necesitan compilar:
-
-```bash
-npm run build
-# luego
+# Producción
 npm start
 ```
 
----
+## Modelo de Datos
 
-## 6) Verificar que corre
+### Usuario (User)
+```javascript
+{
+  id: INTEGER (auto-increment, primary key),
+  name: STRING (required),
+  email: STRING (required, unique),
+  img: TEXT (optional),
+  createdAt: DATE,
+  updatedAt: DATE
+}
+```
 
-Por lo general:
+## API Endpoints
 
-* Abre `http://localhost:3000` (o el `PORT` indicado en `.env`).
-* Revisa logs en consola.
-* Si hay errores, copia el mensaje y compáralo con el `README` del repo o abre una issue.
-
----
-
-## 7) Troubleshooting rápido
-
-* `node -v` y `npm -v` para comprobar versiones.
-* Si `npm install` falla: elimina `node_modules` y `package-lock.json` y vuelve a intentar:
-
-  ```bash
-  rm -rf node_modules package-lock.json\ n npm install
-  ```
-* Errores de permisos en Linux/macOS: evita usar `sudo npm install` — mejor usar nvm para manejar versiones de Node.
-* Problemas de versión: checa `engines` en `package.json`.
-
----
-
-## 8) Buenas prácticas
-
-* Usa `.env.example` para documentar variables de entorno.
-* Agrega `node_modules` a `.gitignore` (normalmente ya está).
-* Usa `nvm` o `volta` para fijar la versión de Node en el equipo.
-* Añade scripts útiles (`start`, `dev`, `build`, `test`) al `package.json`.
-
----
-
-## 9) Ejemplo mínimo (resumen de comandos)
-
-```bash
-git clone https://github.com/usuario/nombre-proyecto.git
-cd nombre-proyecto
-npm install
-cp .env.example .env     # si existe
-npm run dev               # o npm start
+### Base URL
+```
+http://localhost:3000
 ```
 
 ---
 
-## 10) ¿Qué más quieres? 🤓
+## 🧪 Rutas de Prueba (`/test`)
 
-Si quieres, adapto este README para:
+### GET `/test`
+Obtiene información de prueba.
 
-* **Express** (API REST)
-* **Next.js** (frontend / SSR)
-* **TypeScript** + configuración `tsconfig`
-* **Docker**: Dockerfile y docker-compose
+**Respuesta:**
+```json
+{
+  "nombre": "cristian",
+  "apellido": "Florez",
+  "edad": "25"
+}
+```
 
-Dime cuál y lo preparo con ejemplos específicos.
+**Ejemplo de petición:**
+```bash
+curl -X GET http://localhost:3000/test
+```
 
 ---
 
-¡Listo! Buena suerte con tu proyecto.
+### POST `/test/post`
+Realiza una suma de dos números.
+
+**Body:**
+```json
+{
+  "nOne": 5,
+  "nTwo": 3
+}
+```
+
+**Respuesta:**
+```json
+{
+  "message": "Esta es la suma",
+  "sum": 8
+}
+```
+
+**Ejemplo de petición:**
+```bash
+curl -X POST http://localhost:3000/test/post \
+  -H "Content-Type: application/json" \
+  -d '{"nOne": 5, "nTwo": 3}'
+```
+
+---
+
+### POST `/test/pokemon`
+Obtiene información detallada de un Pokémon específico.
+
+**Headers requeridos:**
+```
+token: 2424
+```
+
+**Body:**
+```json
+{
+  "name": "pikachu"
+}
+```
+
+**Respuesta exitosa:**
+```json
+{
+  "id": 25,
+  "name": "pikachu",
+  "height": 4,
+  "weight": 60,
+  "types": [
+    {"type": "electric"}
+  ],
+  "abilities": [
+    {"ability": "static"},
+    {"ability": "lightning-rod"}
+  ],
+  "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+}
+```
+
+**Respuesta de error (no autorizado):**
+```json
+{
+  "message": "No esta autorizado para acceder a esta info"
+}
+```
+
+**Ejemplo de petición:**
+```bash
+curl -X POST http://localhost:3000/test/pokemon \
+  -H "Content-Type: application/json" \
+  -H "token: 2424" \
+  -d '{"name": "pikachu"}'
+```
+
+---
+
+### GET `/test/pokemones`
+Obtiene una lista de todos los Pokémon disponibles (limitado a 1000).
+
+**Respuesta:**
+```json
+[
+  {"name": "bulbasaur"},
+  {"name": "ivysaur"},
+  {"name": "venusaur"},
+  ...
+]
+```
+
+**Ejemplo de petición:**
+```bash
+curl -X GET http://localhost:3000/test/pokemones
+```
+
+---
+
+## 👥 Rutas de Usuarios (`/user`)
+
+### GET `/user`
+Obtiene todos los usuarios registrados.
+
+**Respuesta:**
+```json
+[
+  {
+    "id": 1,
+    "name": "Juan Pérez",
+    "email": "juan@example.com",
+    "img": "https://example.com/avatar.jpg",
+    "createdAt": "2024-01-15T10:30:00.000Z",
+    "updatedAt": "2024-01-15T10:30:00.000Z"
+  },
+  {
+    "id": 2,
+    "name": "María García",
+    "email": "maria@example.com",
+    "img": null,
+    "createdAt": "2024-01-16T14:20:00.000Z",
+    "updatedAt": "2024-01-16T14:20:00.000Z"
+  }
+]
+```
+
+**Ejemplo de petición:**
+```bash
+curl -X GET http://localhost:3000/user
+```
+
+---
+
+### GET `/user/:id`
+Obtiene un usuario específico por su ID.
+
+**Parámetros:**
+- `id` (integer): ID del usuario
+
+**Respuesta exitosa:**
+```json
+{
+  "id": 1,
+  "name": "Juan Pérez",
+  "email": "juan@example.com",
+  "img": "https://example.com/avatar.jpg",
+  "createdAt": "2024-01-15T10:30:00.000Z",
+  "updatedAt": "2024-01-15T10:30:00.000Z"
+}
+```
+
+**Respuesta de error (usuario no encontrado):**
+```json
+{
+  "message": "Usuario no encontrado"
+}
+```
+
+**Ejemplo de petición:**
+```bash
+curl -X GET http://localhost:3000/user/1
+```
+
+---
+
+### POST `/user`
+Crea un nuevo usuario.
+
+**Body:**
+```json
+{
+  "name": "Carlos López",
+  "email": "carlos@example.com",
+  "img": "https://example.com/carlos-avatar.jpg"
+}
+```
+
+**Respuesta:**
+```json
+{
+  "id": 3,
+  "name": "Carlos López",
+  "email": "carlos@example.com",
+  "img": "https://example.com/carlos-avatar.jpg",
+  "createdAt": "2024-01-17T09:15:00.000Z",
+  "updatedAt": "2024-01-17T09:15:00.000Z"
+}
+```
+
+**Ejemplo de petición:**
+```bash
+curl -X POST http://localhost:3000/user \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Carlos López",
+    "email": "carlos@example.com",
+    "img": "https://example.com/carlos-avatar.jpg"
+  }'
+```
+
+---
+
+### PUT `/user/:id`
+Actualiza un usuario existente.
+
+**Parámetros:**
+- `id` (integer): ID del usuario a actualizar
+
+**Body:**
+```json
+{
+  "name": "Carlos López Actualizado",
+  "email": "carlos.nuevo@example.com"
+}
+```
+
+**Respuesta exitosa:**
+```json
+{
+  "id": 3,
+  "name": "Carlos López Actualizado",
+  "email": "carlos.nuevo@example.com",
+  "img": "https://example.com/carlos-avatar.jpg",
+  "createdAt": "2024-01-17T09:15:00.000Z",
+  "updatedAt": "2024-01-17T11:30:00.000Z"
+}
+```
+
+**Respuesta de error (usuario no encontrado):**
+```json
+{
+  "message": "Usuario no encontrado"
+}
+```
+
+**Ejemplo de petición:**
+```bash
+curl -X PUT http://localhost:3000/user/3 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Carlos López Actualizado",
+    "email": "carlos.nuevo@example.com"
+  }'
+```
+
+---
+
+### DELETE `/user/:id`
+Elimina un usuario existente.
+
+**Parámetros:**
+- `id` (integer): ID del usuario a eliminar
+
+**Respuesta exitosa:**
+```json
+{
+  "message": "Usuario eliminado"
+}
+```
+
+**Respuesta de error (usuario no encontrado):**
+```json
+{
+  "message": "Usuario no encontrado"
+}
+```
+
+**Ejemplo de petición:**
+```bash
+curl -X DELETE http://localhost:3000/user/3
+```
+
+---
+
+## Códigos de Estado HTTP
+
+| Código | Descripción |
+|--------|-------------|
+| 200 | OK - Petición exitosa |
+| 201 | Created - Recurso creado exitosamente |
+| 404 | Not Found - Recurso no encontrado |
+| 500 | Internal Server Error - Error del servidor |
+
+## Manejo de Errores
+
+### Errores de Validación
+```json
+{
+  "error": "Mensaje de error descriptivo"
+}
+```
+
+### Errores de Base de Datos
+```json
+{
+  "error": "Error en el servidor",
+  "details": "Detalles específicos del error"
+}
+```
+
+## Notas Importantes
+
+1. **Autenticación**: El endpoint `/test/pokemon` requiere un token en el header `token: 2424`
+2. **Validación**: El email debe ser único en la base de datos
+3. **Imágenes**: El campo `img` es opcional y acepta URLs de imágenes
+4. **Timestamps**: Todos los usuarios incluyen `createdAt` y `updatedAt` automáticamente
+5. **CORS**: Configurado para permitir peticiones desde cualquier origen en desarrollo
+
+## Desarrollo
+
+### Scripts Disponibles
+```bash
+npm run dev    # Ejecutar en modo desarrollo con nodemon
+npm start      # Ejecutar en modo producción
+```
+
+### Base de Datos
+La aplicación sincroniza automáticamente la base de datos al iniciar. Asegúrate de que PostgreSQL esté ejecutándose y las credenciales en el archivo `.env` sean correctas.
+
+## Contribución
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
