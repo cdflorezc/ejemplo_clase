@@ -1,4 +1,5 @@
 import express from 'express';
+import db from "./models/index.js";
 import routerApi from './routes/index.js';
 import config from './config/config.js';
 import cors from 'cors';
@@ -21,6 +22,12 @@ app.use(
 
 routerApi(app);
 
+// Sincronizar base de datos
+db.sequelize.sync().then(() => {
+  console.log("Base de datos sincronizada");
+}).catch(err => {
+  console.error("Error al sincronizar la base de datos:", err);
+});
 
 if (config.isProd) {
   
